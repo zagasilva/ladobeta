@@ -68,7 +68,17 @@ module.exports = async function (context, req) {
 
     context.res = { status: 200, headers: corsHeaders, body: { ok: true, message: 'saved' } };
   } catch (err) {
+    // Log the full error server-side
     context.log.error('Error saving subscriber:', err);
-    context.res = { status: 500, headers: { 'Access-Control-Allow-Origin': '*' }, body: { ok: false, message: 'server error' } };
+    // Temporarily include the error message in the response body to aid debugging.
+    // NOTE: This exposes internal error messages to the client and should be reverted
+    // once the root cause has been identified.
+    const errorMessage = err && err.message ? err.message : 'server error';
+    const errorStack = err && err.stack ? err.stack : undefined;
+    context.res = {
+      status: 500,
+      headers: { 'Access-Control-Allow-Origin': '*' },
+      body: { ok: false, message: errorMessage, stack: errorStack }
+    };
   }
 };
