@@ -1,0 +1,34 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html"
+    },
+    "routes": [
+        {
+            "route": "/assets/*",
+            "headers": {
+                "Cache-Control": "public, max-age=2592000"
+            }
+        },
+        {
+            "route": "/css/*",
+            "headers": {
+                "Cache-Control": "public, max-age=86400"
+            }
+        },
+        {
+            "route": "/js/*",
+            "headers": {
+                "Cache-Control": "public, max-age=86400"
+            }
+        }
+    ],
+    "globalHeaders": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Content-Security-Policy": "default-src 'self'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; script-src 'self'"
+    },
+    "mimeTypes": {
+        ".svg": "image/svg+xml"
+    }
+}
