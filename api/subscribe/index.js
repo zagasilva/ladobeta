@@ -10,9 +10,21 @@ const crypto = require("crypto");
 module.exports = async function (context, req) {
   context.log('Subscribe function processed a request.');
 
+  const corsHeaders = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST,OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+
   try {
+    // Handle preflight
+    if (req.method === 'OPTIONS') {
+      context.res = { status: 204, headers: corsHeaders, body: null };
+      return;
+    }
+
     if (req.method !== 'POST') {
-      context.res = { status: 405, body: { ok: false, message: 'method not allowed' } };
+      context.res = { status: 405, headers: corsHeaders, body: { ok: false, message: 'method not allowed' } };
       return;
     }
 
@@ -25,7 +37,7 @@ module.exports = async function (context, req) {
     const connectionString = process.env.STORAGE_CONN;
     if (!connectionString) {
       context.log.error('STORAGE_CONN is not configured');
-      context.res = { status: 500, body: { ok: false, message: 'storage not configured' } };
+      context.res = { status: 500, headers: corsHeaders, body: { ok: false, message: 'storage not configured' } };
       return;
     }
 
@@ -39,7 +51,7 @@ module.exports = async function (context, req) {
     try {
       await client.getEntity(partitionKey, rowKey);
       // already exists
-      context.res = { status: 200, body: { ok: true, message: 'already-subscribed' } };
+      context.res = { status: 200, headers: corsHeaders, body: { ok: true, message: 'already-subscribed' } };
       return;
     } catch (err) {
       // getEntity throws when not found — proceed to create
@@ -54,9 +66,9 @@ module.exports = async function (context, req) {
 
     await client.createEntity(entity);
 
-    context.res = { status: 200, body: { ok: true, message: 'saved' } };
+    context.res = { status: 200, headers: corsHeaders, body: { ok: true, message: 'saved' } };
   } catch (err) {
     context.log.error('Error saving subscriber:', err);
-    context.res = { status: 500, body: { ok: false, message: 'server error' } };
+    context.res = { status: 500, headers: { 'Access-Control-Allow-Origin': '*' }, body: { ok: false, message: 'server error' } };
   }
 };
