@@ -1,0 +1,11 @@
+{
+  "name": "ladobeta-api",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "@azure/data-tables": "^12.5.0"
+  }
+}

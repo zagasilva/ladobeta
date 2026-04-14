@@ -71,17 +71,39 @@ function initNotifyForm() {
     const form = document.getElementById('notifyForm');
     const success = document.getElementById('notifySuccess');
 
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        const input = document.getElementById('emailInput');
+        const email = input.value.trim();
+        if (!email) return;
 
-        const email = document.getElementById('emailInput').value;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'A enviar...';
 
-        // For now, just show success message
-        // In production, this would POST to an Azure Function or similar
-        console.log('Email subscribed:', email);
+        try {
+            const res = await fetch('/api/subscribe', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email })
+            });
 
-        form.hidden = true;
-        success.hidden = false;
+            const data = await res.json().catch(() => ({}));
+
+            if (res.ok && data.ok) {
+                form.hidden = true;
+                success.hidden = false;
+            } else {
+                const message = data && data.message ? data.message : 'Erro ao subscrever. Tente novamente.';
+                alert(message);
+            }
+        } catch (err) {
+            console.error('Subscribe error', err);
+            alert('Erro de rede. Tente novamente.');
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Avisar-me';
+        }
     });
 }
 
