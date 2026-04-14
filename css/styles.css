@@ -561,6 +561,25 @@ h3 {
     line-height: 1.6;
 }
 
+.host-instagram {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding: 8px 16px;
+    border-radius: var(--radius-full);
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--yellow);
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.host-instagram:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--white);
+}
+
 /* --- Topics --- */
 .topics-grid {
     display: grid;
