@@ -70,11 +70,13 @@ function initScrollAnimations() {
 function initNotifyForm() {
     const form = document.getElementById('notifyForm');
     const success = document.getElementById('notifySuccess');
+    console.debug('initNotifyForm: form=', form, 'success=', success);
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const input = document.getElementById('emailInput');
         const email = input.value.trim();
+        console.debug('notifyForm submit handler fired, email=', email);
         if (!email) return;
 
         const submitBtn = form.querySelector('button[type="submit"]');
@@ -82,6 +84,7 @@ function initNotifyForm() {
         submitBtn.textContent = 'A enviar...';
 
         try {
+            console.debug('sending POST to /api/subscribe', { email });
             const res = await fetch('/api/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
