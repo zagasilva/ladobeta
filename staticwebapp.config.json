@@ -4,6 +4,14 @@
     },
     "routes": [
         {
+            "route": "/*",
+            "redirect": "https://www.ladobetapodcast.pt",
+            "statusCode": 301,
+            "condition": {
+                "host": "ladobetapodcast.pt"
+            }
+        },
+        {
             "route": "/assets/*",
             "headers": {
                 "Cache-Control": "public, max-age=2592000"
