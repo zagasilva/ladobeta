@@ -199,6 +199,14 @@ h3 {
 .nav-logo-img {
     width: 125px;
     height: auto;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.navbar.scrolled .nav-logo-img {
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .footer-logo-img {
