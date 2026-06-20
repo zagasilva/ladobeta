@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollAnimations();
     initNotifyForm();
     initSmoothScroll();
+    initPlatformStatus();
 });
 
 // --- Navbar scroll effect ---
@@ -107,6 +108,35 @@ function initNotifyForm() {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Avisar-me';
         }
+    });
+}
+
+// --- Platform launch status ---
+function initPlatformStatus() {
+    // 2026-06-21 00:00:00 Europe/London (BST = UTC+1)
+    const launchUTC = new Date('2026-06-20T23:00:00Z');
+    const now = new Date();
+
+    if (now >= launchUTC) {
+        setLaunched();
+    } else {
+        setTimeout(setLaunched, launchUTC - now);
+    }
+}
+
+function setLaunched() {
+    const section = document.getElementById('plataformas');
+    if (!section) return;
+
+    const h2 = section.querySelector('h2');
+    if (h2) h2.innerHTML = 'Já <span class="text-bordo">disponível</span>';
+
+    const desc = section.querySelector('.section-header p');
+    if (desc) desc.textContent = 'O Lado Beta já está disponível nas principais plataformas de podcast. A primeira temporada tem 17 episódios, com um novo episódio todos os domingos.';
+
+    section.querySelectorAll('.platform-status').forEach(badge => {
+        badge.textContent = 'Já disponível';
+        badge.classList.add('platform-status--live');
     });
 }
 

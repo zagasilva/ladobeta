@@ -679,9 +679,9 @@ h3 {
 /* --- Platforms --- */
 .platforms-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 32px;
-    max-width: 900px;
+    max-width: 700px;
     margin: 0 auto;
 }
 
@@ -723,6 +723,11 @@ h3 {
     color: var(--bordo);
     font-weight: 600;
     font-size: 0.85rem;
+}
+
+.platform-status--live {
+    background: #E8F5E9;
+    color: #2E7D32;
 }
 
 .platform-link {
