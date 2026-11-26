@@ -125,25 +125,36 @@
                 </div>
             </div>
 
-            <figure class="strip reveal-load" style="--d:2" aria-label="Estado das temporadas: Temporada 1 completa, Temporada 2 em gravação">
-                <div class="strip__body" aria-hidden="true">
-                    <div class="strip__cap"></div>
-                    <div class="strip__window">
-                        <span class="strip__line strip__line--one"></span>
-                        <span class="strip__line strip__line--two"></span>
+            <figure class="record reveal-load" style="--d:2" aria-label="Lado A: Temporada 1, completa. Lado B: Temporada 2, em gravação, estreia em 2027.">
+                <div class="record__stage" aria-hidden="true">
+                    <div class="record__disc">
+                        <div class="record__spin">
+                            <svg class="record__label" viewBox="0 0 200 200">
+                                <defs><path id="labelPath" d="M100,100 m-70,0 a70,70 0 1,1 140,0 a70,70 0 1,1 -140,0"/></defs>
+                                <circle cx="100" cy="100" r="100" fill="#FAAF41"/>
+                                <circle cx="100" cy="100" r="86" fill="none" stroke="#5D152D" stroke-width="1" opacity="0.35"/>
+                                <text class="record__ring"><textPath href="#labelPath">LADO A · TEMPORADA 1 · 17 EPISÓDIOS · LADO BETA ·</textPath></text>
+                                <text class="record__beta" x="100" y="122" text-anchor="middle">β</text>
+                                <circle cx="100" cy="100" r="5" fill="#2A0713"/>
+                            </svg>
+                        </div>
                     </div>
-                    <div class="strip__well"></div>
+                    <div class="record__sleeve">
+                        <span class="record__sleeve-beta">β</span>
+                        <span class="record__sleeve-title">Lado<br>Beta</span>
+                        <span class="record__sleeve-meta">Podcast · Vol. 1</span>
+                    </div>
                 </div>
-                <figcaption class="strip__notes">
+                <figcaption class="record__notes">
                     <span class="note note--one">
-                        <span class="note__tag">T1</span>
-                        <strong>Completa</strong>
-                        <span>17 episódios · já disponível</span>
+                        <span class="note__tag">Lado A</span>
+                        <strong>Temporada 1</strong>
+                        <span>17 episódios · disponível</span>
                     </span>
                     <span class="note note--two">
-                        <span class="note__tag">T2</span>
-                        <strong>A aparecer…</strong>
-                        <span>em gravação · estreia em 2027</span>
+                        <span class="note__tag">Lado B</span>
+                        <strong>Temporada 2</strong>
+                        <span>em gravação · 2027</span>
                     </span>
                 </figcaption>
             </figure>
@@ -169,20 +180,20 @@
         <section class="seasons paper" id="temporadas">
             <div class="wrap">
                 <div class="section-head reveal">
-                    <p class="kicker">Duas linhas</p>
-                    <h2>Uma temporada completa. <em>Outra a caminho.</em></h2>
+                    <p class="kicker">Dois lados</p>
+                    <h2>Lado A completo. <em>Lado B a gravar.</em></h2>
                 </div>
 
                 <div class="seasons__grid">
                     <article class="season season--one reveal" id="plataformas">
                         <header class="season__top">
-                            <span class="mono">Linha 01</span>
+                            <span class="mono">Lado A</span>
                             <span class="chip chip--done">
                                 <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3 8.5l3 3 7-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 Concluída
                             </span>
                         </header>
-                        <div class="season__numeral" aria-hidden="true">T1</div>
+                        <div class="season__numeral" aria-hidden="true">A</div>
                         <h3>Temporada 1</h3>
                         <p class="season__stat"><span>17</span> episódios para ouvir do início ao fim</p>
                         <p>A primeira temporada está completa. Ouve quando quiseres, ao teu ritmo, em qualquer plataforma.</p>
@@ -221,16 +232,16 @@
 
                     <article class="season season--two reveal">
                         <header class="season__top">
-                            <span class="mono">Linha 02</span>
+                            <span class="mono">Lado B</span>
                             <span class="chip chip--rec"><span class="rec-dot" aria-hidden="true"></span>Em gravação</span>
                         </header>
-                        <div class="season__numeral season__numeral--outline" aria-hidden="true">T2</div>
+                        <div class="season__numeral season__numeral--outline" aria-hidden="true">B</div>
                         <h3>Temporada 2</h3>
                         <div class="wave" aria-hidden="true">
                             <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                         </div>
                         <p class="season__stat">Estreia em <span>2027</span></p>
-                        <p>Estamos neste momento em estúdio, a gravar novas conversas e novos testemunhos. A segunda linha está a aparecer, e queremos que sejas das primeiras pessoas a saber.</p>
+                        <p>Estamos neste momento em estúdio, a gravar novas conversas e novos testemunhos para o Lado B. Queremos que sejas das primeiras pessoas a saber quando estrear.</p>
                         <a href="#notificacoes" class="btn btn--wine">Avisa-me da estreia <span aria-hidden="true">→</span></a>
                     </article>
                 </div>
@@ -342,7 +353,7 @@
             <div class="wrap notify__grid">
                 <div class="notify__copy reveal">
                     <p class="kicker"><span class="rec-dot" aria-hidden="true"></span>Temporada 2 · 2027</p>
-                    <h2>A segunda linha está a <em>aparecer</em>.</h2>
+                    <h2>O Lado B está a ser <em>gravado</em>.</h2>
                     <p>Deixa o teu e-mail e avisamos-te no dia em que a Temporada 2 estrear. Até lá, a Temporada 1 está completa à tua espera.</p>
                 </div>
                 <div class="notify__box reveal">
@@ -394,7 +405,7 @@
         </div>
         <div class="wrap footer__bottom">
             <p>&copy; 2025–2026 Lado Beta Podcast. Todos os direitos reservados.</p>
-            <p class="mono">T1 ✓ · T2 ● REC</p>
+            <p class="mono">Lado A ✓ · Lado B ● REC</p>
         </div>
     </footer>
 
