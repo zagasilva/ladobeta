@@ -1,127 +1,119 @@
 // === Lado Beta Podcast - Main JS ===
 
+document.documentElement.classList.add('js');
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initMobileMenu();
-    initScrollAnimations();
+    initReveal();
     initNotifyForm();
-    initSmoothScroll();
 });
 
-// --- Navbar scroll effect ---
+// --- Navbar background once the page scrolls ---
 function initNavbar() {
     const navbar = document.getElementById('navbar');
-    let lastScroll = 0;
-
-    window.addEventListener('scroll', () => {
-        const currentScroll = window.scrollY;
-        navbar.classList.toggle('scrolled', currentScroll > 50);
-        lastScroll = currentScroll;
-    }, { passive: true });
+    const update = () => navbar.classList.toggle('is-scrolled', window.scrollY > 40);
+    update();
+    window.addEventListener('scroll', update, { passive: true });
 }
 
-// --- Mobile menu toggle ---
+// --- Mobile menu ---
 function initMobileMenu() {
     const toggle = document.getElementById('navToggle');
     const links = document.getElementById('navLinks');
 
-    toggle.addEventListener('click', () => {
-        const isOpen = links.classList.toggle('open');
-        toggle.classList.toggle('active');
-        toggle.setAttribute('aria-expanded', isOpen);
-    });
+    const setOpen = (open) => {
+        links.classList.toggle('is-open', open);
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+        toggle.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+        document.body.style.overflow = open ? 'hidden' : '';
+    };
 
-    // Close menu on link click
-    links.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            links.classList.remove('open');
-            toggle.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-        });
+    toggle.addEventListener('click', () => setOpen(!links.classList.contains('is-open')));
+    links.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && links.classList.contains('is-open')) setOpen(false);
     });
 }
 
-// --- Scroll-triggered fade-in animations ---
-function initScrollAnimations() {
-    const elements = document.querySelectorAll(
-        '.section-header, .section-text, .section-visual, ' +
-        '.host-card, .topic-card, .platform-card, .notify-wrapper, ' +
-        '.duality-item, .about-card'
-    );
+// --- Scroll reveal with sibling stagger ---
+function initReveal() {
+    const items = document.querySelectorAll('.reveal');
 
-    elements.forEach(el => el.classList.add('fade-in'));
+    if (!('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('is-visible'));
+        return;
+    }
+
+    // Stagger siblings that share a parent (lists, grids)
+    items.forEach(el => {
+        const siblings = [...el.parentElement.children].filter(c => c.classList.contains('reveal'));
+        const index = siblings.indexOf(el);
+        if (index > 0) el.style.setProperty('--stagger', `${Math.min(index, 6) * 80}ms`);
+    });
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+                entry.target.classList.add('is-visible');
                 observer.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -40px 0px'
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-    elements.forEach(el => observer.observe(el));
+    items.forEach(el => observer.observe(el));
 }
 
-// --- Notification form ---
+// --- Season 2 notification form ---
 function initNotifyForm() {
     const form = document.getElementById('notifyForm');
     const success = document.getElementById('notifySuccess');
-    console.debug('initNotifyForm: form=', form, 'success=', success);
+    const error = document.getElementById('notifyError');
+    const input = document.getElementById('emailInput');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    const showError = (msg) => {
+        error.textContent = msg;
+        error.hidden = false;
+    };
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const input = document.getElementById('emailInput');
-        const email = input.value.trim();
-        console.debug('notifyForm submit handler fired, email=', email);
-        if (!email) return;
+        error.hidden = true;
 
-        const submitBtn = form.querySelector('button[type="submit"]');
+        const email = input.value.trim();
+        if (!email || !input.checkValidity()) {
+            showError('Escreve um endereço de e-mail válido.');
+            input.focus();
+            return;
+        }
+
         submitBtn.disabled = true;
-        submitBtn.textContent = 'A enviar...';
+        submitBtn.textContent = 'A enviar…';
 
         try {
-            console.debug('sending POST to /api/subscribe', { email });
             const res = await fetch('/api/subscribe', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
             });
-
             const data = await res.json().catch(() => ({}));
 
             if (res.ok && data.ok) {
                 form.hidden = true;
                 success.hidden = false;
             } else {
-                const message = data && data.message ? data.message : 'Erro ao subscrever. Tente novamente.';
-                alert(message);
+                showError(data.message === 'invalid email'
+                    ? 'Escreve um endereço de e-mail válido.'
+                    : 'Não foi possível subscrever. Tenta novamente.');
             }
         } catch (err) {
             console.error('Subscribe error', err);
-            alert('Erro de rede. Tente novamente.');
+            showError('Erro de rede. Tenta novamente.');
         } finally {
             submitBtn.disabled = false;
             submitBtn.textContent = 'Avisar-me';
         }
-    });
-}
-
-// --- Smooth scroll for anchor links ---
-function initSmoothScroll() {
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-        link.addEventListener('click', (e) => {
-            const targetId = link.getAttribute('href');
-            if (targetId === '#') return;
-
-            const target = document.querySelector(targetId);
-            if (target) {
-                e.preventDefault();
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
     });
 }
